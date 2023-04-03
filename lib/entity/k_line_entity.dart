@@ -1,62 +1,65 @@
-import '../entity/k_entity.dart';
+import 'package:k_chart/entity/k_entity.dart';
 
 class KLineEntity extends KEntity {
-  late double open;
-  late double high;
-  late double low;
-  late double close;
-  late double vol;
   late double? amount;
   double? change;
   double? ratio;
   int? time;
 
   KLineEntity.fromCustom({
+    required double open,
+    required double high,
+    required double low,
+    required double close,
+    required double vol,
     this.amount,
-    required this.open,
-    required this.close,
     this.change,
     this.ratio,
-    required this.time,
-    required this.high,
-    required this.low,
-    required this.vol,
-  });
-
-  KLineEntity.fromJson(Map<String, dynamic> json) {
-    open = json['open']?.toDouble() ?? 0;
-    high = json['high']?.toDouble() ?? 0;
-    low = json['low']?.toDouble() ?? 0;
-    close = json['close']?.toDouble() ?? 0;
-    vol = json['vol']?.toDouble() ?? 0;
-    amount = json['amount']?.toDouble();
-    int? tempTime = json['time']?.toInt();
-    //兼容火币数据
-    if (tempTime == null) {
-      tempTime = json['id']?.toInt() ?? 0;
-      tempTime = tempTime! * 1000;
-    }
-    time = tempTime;
-    ratio = json['ratio']?.toDouble();
-    change = json['change']?.toDouble();
+  }) {
+    this.open = open;
+    this.high = high;
+    this.low = low;
+    this.close = close;
+    this.vol = vol;
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['time'] = this.time;
-    data['open'] = this.open;
-    data['close'] = this.close;
-    data['high'] = this.high;
-    data['low'] = this.low;
-    data['vol'] = this.vol;
-    data['amount'] = this.amount;
-    data['ratio'] = this.ratio;
-    data['change'] = this.change;
-    return data;
+  KLineEntity.fromJson(Map<String, dynamic> json) {
+    open = json['open'] != null ? json['open'] as double : 0;
+    high = json['high'] != null ? json['high'] as double : 0;
+    low = json['low'] != null ? json['low'] as double : 0;
+    close = json['close'] != null ? json['close'] as double : 0;
+    vol = json['vol'] != null ? json['vol'] as double : 0;
+    amount = json['amount'] != null ? json['amount'] as double : 0;
+    var tempTime = json['time'] != null ? json['time'] as int : null;
+    // TODO: REMOVE FOLLOWING STATEMENT
+    // Compatible with Huobi(https://www.huobi.com/en-us/) data
+    if (tempTime == null) {
+      tempTime = json['id'] != null ? json['id'] as int : 0;
+      tempTime = tempTime * 1000;
+    }
+    time = tempTime;
+    ratio = json['ratio'] != null ? json['ratio'] as double : null;
+    change = json['change'] != null ? json['change'] as double : null;
   }
 
   @override
   String toString() {
     return 'MarketModel{open: $open, high: $high, low: $low, close: $close, vol: $vol, time: $time, amount: $amount, ratio: $ratio, change: $change}';
+  }
+
+  Map<String, dynamic> toJson() {
+    final data = <String, dynamic>{};
+
+    data['time'] = time;
+    data['open'] = open;
+    data['close'] = close;
+    data['high'] = high;
+    data['low'] = low;
+    data['vol'] = vol;
+    data['amount'] = amount;
+    data['ratio'] = ratio;
+    data['change'] = change;
+
+    return data;
   }
 }
