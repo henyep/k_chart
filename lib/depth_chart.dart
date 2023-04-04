@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-
 import 'package:k_chart/flutter_k_chart.dart';
 
 class DepthChart extends StatefulWidget {
@@ -15,6 +14,7 @@ class DepthChart extends StatefulWidget {
     this.bids,
     this.asks,
     this.chartColors, {
+    super.key,
     this.fixedLength = 2,
     this.buyPathColor,
     this.sellPathColor,
